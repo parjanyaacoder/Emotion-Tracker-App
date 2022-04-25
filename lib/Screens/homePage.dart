@@ -28,9 +28,9 @@ class HomePage extends StatelessWidget {
     ),
      child: SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text('Emotions Page',),centerTitle: true,),
+        appBar: AppBar(title: const Text('Emotions Page',),centerTitle: true,),
         body:
-            SingleChildScrollView(
+            const SingleChildScrollView(
           child: EmotionGridView(),
             ),
 

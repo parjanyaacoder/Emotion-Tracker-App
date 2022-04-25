@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_supa_app/Screens/signUp_screen.dart';
 import 'Screens/homePage.dart';
 import 'Screens/loginScreen.dart';
 

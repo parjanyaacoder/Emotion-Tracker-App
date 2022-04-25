@@ -76,7 +76,7 @@ class _CreateEmotionScreenState extends State<CreateEmotionScreen> {
                             labelStyle: const TextStyle(fontSize: 20,color: Colors.blueGrey),
                             counter: Padding(
                               padding: EdgeInsets.all(4.0),
-                              child: Text('Word count - ${wordCount}/100',style: TextStyle(fontSize: 15,color: Colors.blueGrey),),
+                              child: Text('Word count - ${wordCount}/200',style: TextStyle(fontSize: 15,color: Colors.blueGrey),),
                             ),
                             enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20)))
                         ),
