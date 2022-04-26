@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_supa_app/Providers/emotion_class.dart';
+import 'package:glass_kit/glass_kit.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +22,12 @@ var emotionList = [];
     final prefs = await  SharedPreferences.getInstance();
     return prefs.getString('userId');
   }
+
+  deleteEmotion(String emotionId)
+  {
+    Provider.of<EmotionListClass>(context,listen: false).deleteEmotion(emotionId);
+  }
+
 String? userId;
   @override
   void initState() {
@@ -74,25 +82,29 @@ String? userId;
                   ),
                   itemCount: emotionList.length,
                   itemBuilder: (context, index) => InkWell(
-                        child: Container(
+                        child: GlassContainer(
+
+                          height: MediaQuery.of(context).size.height*0.35,
                           margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
-                          decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
-                                colors: [Colors.blue.shade200, Colors.tealAccent.shade200],
+                                colors: [Colors.orange.shade200,Colors.red.shade500],
                               ),
                               borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Colors.grey)),
+                              borderColor: Colors.grey,
+                          borderWidth: 2.0,
+                          width:  MediaQuery.of(context).size.height*0.25,
+
                           child: Column(
                             children:  [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text('${emotionList[index].title}'),
+                                child: Text('${emotionList[index].title}',style: TextStyle(color: Colors.white),),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text('${emotionList[index].content}'),
+                                child: Text('${emotionList[index].content}',style: TextStyle(color: Colors.white),),
                               )
                             ],
                           ),
@@ -106,6 +118,9 @@ String? userId;
                                       emotionText:
                                       emotionList[index].content)));
                         },
+                    onLongPress: (){
+                          deleteEmotion(emotionList[index].id);
+                    },
                       ))
             ],
           );

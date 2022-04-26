@@ -48,6 +48,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
 
     return  MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.yellow.shade600,
+        accentColor: Colors.orange.shade700,
+        bottomAppBarColor: Colors.orange.shade700,
+        primarySwatch: Colors.orange,
+      ),
       debugShowCheckedModeBanner: false,
       home: authorized ? const HomePage() : const LoginScreen()
     );

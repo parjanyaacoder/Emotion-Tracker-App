@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_supa_app/Screens/analyzed_screen.dart';
 import 'package:flutter_supa_app/symbl.dart';
+import 'package:glass_kit/glass_kit.dart';
 
 class EmotionView extends StatefulWidget {
   const EmotionView({Key? key,@required this.emotionTitle, @required this.emotionText}) : super(key: key);
@@ -44,34 +45,60 @@ class _EmotionViewState extends State<EmotionView> {
 
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(30),
-              child: Text(
-                '${widget.emotionTitle}',
-                style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 25),
-              ),
-            ),
-            Container(
-             decoration: const BoxDecoration(
-               borderRadius:  BorderRadius.all(Radius.circular(10)),
-             ),
-              height: MediaQuery.of(context).size.height*0.8,
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.symmetric(horizontal: 15),
-                child: Padding(
+        backgroundColor: Colors.yellow.shade100,
+        appBar: AppBar(title: const Text('Emotion View',),
+        centerTitle: true,
+          elevation: 10,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
                 padding: const EdgeInsets.all(30),
                 child: Text(
-                 widget.emotionText,
-                  style: const TextStyle(
-                    fontSize: 20,
+                  '${widget.emotionTitle}',
+                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 25),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GlassContainer.clearGlass(
+                  gradient:  LinearGradient(
+                    colors: [Colors.orange.shade200,Colors.red.shade500],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderGradient: LinearGradient(
+                    colors: [Colors.black26,Colors.grey.shade400],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderWidth: 2.0,
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Container(
+                   decoration: const BoxDecoration(
+                     borderRadius:  BorderRadius.all(Radius.circular(10)),
+                   ),
+                    height: MediaQuery.of(context).size.height*0.8,
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Padding(
+                      padding: const EdgeInsets.all(30),
+                      child: Text(
+                       widget.emotionText,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white
+                        ),
+                      ),
+                    )
                   ),
                 ),
               )
-            )
-          ],
+            ],
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton:  Container(
@@ -90,9 +117,10 @@ class _EmotionViewState extends State<EmotionView> {
 
             ),
             elevation: 2.0,
-            child: const   Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Analyze',softWrap: true,style: TextStyle(fontSize: 15),),
+            child: const
+               Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Analyze',softWrap: true,style: TextStyle(fontSize: 15),),
             ),
           ),
         ),

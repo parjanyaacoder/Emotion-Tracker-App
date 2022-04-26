@@ -51,4 +51,12 @@ class EmotionListClass extends ChangeNotifier
       notifyListeners();
     }
 
+    deleteEmotion(String emotionId)
+    async {
+      SupabaseManager supabaseManager = SupabaseManager();
+      response = await supabaseManager.deleteEmotion(emotionId);
+      getData();
+      notifyListeners();
+    }
+
 }

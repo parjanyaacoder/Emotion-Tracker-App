@@ -31,19 +31,10 @@ class _CreateEmotionScreenState extends State<CreateEmotionScreen> {
 
     return SafeArea(
       child:Scaffold(
-
+        backgroundColor: Colors.yellow.shade100,
         appBar: AppBar(title:const Text('Create Emotion'),
         elevation: 10,
         centerTitle: true,
-        actions: [
-          TextButton(onPressed: () async {
-            if(_titleEditingController.value.text.isNotEmpty && _contentEditingController.value.text.isNotEmpty)
-           { await getUserId().then((value) => userId = value!);
-          await  Provider.of<EmotionListClass>(context,listen: false).createEmotion(userId, _titleEditingController.value.text, _contentEditingController.value.text);
-            Navigator.of(context).pop();
-          }
-            }, child :const Text('Save',style: TextStyle(color: Colors.white),))
-        ],
         ),
         body: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -107,9 +98,14 @@ class _CreateEmotionScreenState extends State<CreateEmotionScreen> {
                     tag: 'hero',
                     key: const Key("fab_key"),
                     child: ElevatedButton(
-
-                      onPressed: (){},
-                      child: const Text('Analyze'),
+                      onPressed: () async {
+                        if(_titleEditingController.value.text.isNotEmpty && _contentEditingController.value.text.isNotEmpty)
+                        { await getUserId().then((value) => userId = value!);
+                        await  Provider.of<EmotionListClass>(context,listen: false).createEmotion(userId, _titleEditingController.value.text, _contentEditingController.value.text);
+                        Navigator.of(context).pop();
+                        }
+                      },
+                      child: const Text('Save'),
                     ),
                   ),
                 ]
@@ -120,3 +116,4 @@ class _CreateEmotionScreenState extends State<CreateEmotionScreen> {
     );
   }
 }
+

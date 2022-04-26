@@ -26,19 +26,22 @@ class _HomePageState extends State<HomePage> {
 
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: Colors.blue
+        statusBarColor: Colors.orange
       )
     );
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
      value: const SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
-      systemNavigationBarColor: Colors.blue,
+      systemNavigationBarColor: Colors.orange,
 
     ),
      child: SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Emotions Page',),centerTitle: true,),
+        backgroundColor: Colors.yellow.shade100,
+        appBar: AppBar(
+          elevation: 10,
+          title: const Text('Emotions Page',),centerTitle: true,),
         body: const EmotionGridView(),
 
 

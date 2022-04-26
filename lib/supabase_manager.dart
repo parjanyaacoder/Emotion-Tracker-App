@@ -62,4 +62,12 @@ class SupabaseManager {
 
  }
 
+ deleteEmotion(String emptionId)
+ async {
+   var response = await client.from('emotions').delete().eq('emotion_id', emptionId).execute();
+   print(response.error);
+   print(response.status);
+   return response.data;
+ }
+
 }
