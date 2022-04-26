@@ -24,13 +24,13 @@ class SupabaseManager {
          "type":"sms",
          "token":otp
        }));
-   print(response.body);
+   // print(response.body);
    if(response.statusCode == 200)
      {
        await prefs.setString('userId','${json.decode(response.body)['user']['id']}');
        await prefs.setString('phoneNumber','${json.decode(response.body)['user']['phone']}');
      }
-   print(response.statusCode);
+   // print(response.statusCode);
  }
 
 
@@ -45,9 +45,9 @@ class SupabaseManager {
        body: json.encode({
       "phone":phone
    }));
-
-   print(response.body);
-   print(response.statusCode);
+   //
+   // print(response.body);
+   // print(response.statusCode);
  }
 
  signUpEmail(String email,String password,String phone,)
@@ -67,16 +67,16 @@ class SupabaseManager {
    return response.data;
  }
 
- setEmotionData(String emotionId,String userId,String emotionText,String emotionTitle, bool isAnalyzed) async {
+ createEmotionData(String userId,String emotionTitle,String emotionText, bool isAnalyzed) async {
    var response = await client.from('emotions').insert({
       'user_id':userId,
-      'emotion_id':emotionId,
      'emotion_text':emotionText,
      'emotion_title':emotionTitle,
      'isAnalyzed':isAnalyzed
-   });
+   }).execute();
    print("Form supa");
-   print(response);
+  return response.data;
+
  }
 
 }

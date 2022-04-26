@@ -18,6 +18,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+ @override
+ void initState() {
+    super.initState();
+    SupabaseManager supabaseManager = new SupabaseManager();
+    supabaseManager.getEmotionsData();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -37,9 +44,8 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(title: const Text('Emotions Page',),centerTitle: true,),
         body:
-            const SingleChildScrollView(
-          child: EmotionGridView(),
-            ),
+             EmotionGridView(),
+
 
         floatingActionButton:FloatingActionButton(
           key: const Key("fab_key"),heroTag: "hero",

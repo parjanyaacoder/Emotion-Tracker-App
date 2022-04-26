@@ -20,6 +20,7 @@ class EmotionListClass extends ChangeNotifier
    var response;
 
      getData() async {
+       emotionList.clear();
       SupabaseManager supabaseManager = SupabaseManager();
       response =await supabaseManager.getEmotionsData();
       // print(response);
@@ -48,8 +49,12 @@ class EmotionListClass extends ChangeNotifier
        return emotionList;
    }
 
-
-
-
+    createEmotion(String userId,String title,String content)
+    async {
+      SupabaseManager supabaseManager = SupabaseManager();
+      response =await supabaseManager.createEmotionData(userId,title,content,false);
+      emotionList = [...emotionList,Emotion(response[0]['emotion_id'],response[0]['emotion_title'],response[0]['emotion_text'],response[0]['isAnalyzed'])];
+      notifyListeners();
+    }
 
 }

@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<bool> checkUser() async  {
     final prefs = await  SharedPreferences.getInstance();
-    print(prefs.getString('userId'));
+    // print(prefs.getString('userId'));
     if(prefs.getString('userId')!=null) {
       return true;
     }

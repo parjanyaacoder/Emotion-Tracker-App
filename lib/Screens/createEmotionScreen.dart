@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_supa_app/Providers/emotionClass.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateEmotionScreen extends StatefulWidget {
   const CreateEmotionScreen({Key? key}) : super(key: key);
@@ -14,6 +17,14 @@ class _CreateEmotionScreenState extends State<CreateEmotionScreen> {
   final TextEditingController _titleEditingController = TextEditingController();
   final TextEditingController _contentEditingController = TextEditingController();
   var wordCount = 0;
+
+  Future<String?> getUserId() async {
+    final prefs = await  SharedPreferences.getInstance();
+    return prefs.getString('userId') ?? '';
+  }
+
+  var userId;
+
   @override
   Widget build(BuildContext context) {
 
@@ -26,7 +37,13 @@ class _CreateEmotionScreenState extends State<CreateEmotionScreen> {
         elevation: 10,
         centerTitle: true,
         actions: [
-          TextButton(onPressed: (){}, child :const Text('Save',style: TextStyle(color: Colors.white),))
+          TextButton(onPressed: () async {
+            if(_titleEditingController.value.text.isNotEmpty && _contentEditingController.value.text.isNotEmpty)
+           { await getUserId().then((value) => userId = value);
+          await  Provider.of<EmotionListClass>(context,listen: false).createEmotion(userId, _titleEditingController.value.text, _contentEditingController.value.text);
+            Navigator.of(context).pop();
+          }
+            }, child :const Text('Save',style: TextStyle(color: Colors.white),))
         ],
         ),
         body: Padding(

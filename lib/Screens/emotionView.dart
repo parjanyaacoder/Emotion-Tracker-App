@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_supa_app/Screens/analyzedScreen.dart';
+import 'package:flutter_supa_app/symbl.dart';
 
 class EmotionView extends StatefulWidget {
   const EmotionView({Key? key,@required this.emotionTitle, @required this.emotionText}) : super(key: key);
@@ -12,13 +14,40 @@ class EmotionView extends StatefulWidget {
 
 class _EmotionViewState extends State<EmotionView> {
 
+  var sentimentMsgs;
 
+ Future<List> analyzeText(String text)
+  async {
+    var authToken;
+    var conversationId;
+    var jobId;
+    var tempMsgs;
+    await SymblApi().getAccessToken().then((val)=>
+  {  print(val),
+    authToken=val});
+    print(authToken);
+    await SymblApi().getConversationId(authToken, text).then((val)=>{conversationId=val['conversationId'],
+    jobId=val['jobId']}
+    );
+    print(conversationId);
+    var status = 'in_progress';
+
+   do
+    {
+     await SymblApi().getJobStatus(jobId, authToken).then((val)=>status = val);
+    } while(status!='completed');
+    await SymblApi().getSentiments(conversationId, authToken).then((val)=>{
+       tempMsgs = val
+    });
+    print('Senti');
+   return  tempMsgs;
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    print(widget.emotionTitle);
-    print(widget.emotionText);
+    // print(widget.emotionTitle);
+    // print(widget.emotionText);
 
     return SafeArea(
       child: Scaffold(
@@ -63,7 +92,15 @@ class _EmotionViewState extends State<EmotionView> {
               child:  Text('Analyze',softWrap: true,style: TextStyle(fontSize: 15),),
             ),
 
-            onPressed: (){},
+            onPressed: () async {
+              print('start');
+             await  analyzeText(widget.emotionText).then((val)=>sentimentMsgs = val);
+             print('end');
+             print(sentimentMsgs);
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>AnalyzedScreen(sentimentMsgs
+              )));
+
+            },
             isExtended: true,
             shape:  RoundedRectangleBorder(
               borderRadius:  BorderRadius.circular(5),
