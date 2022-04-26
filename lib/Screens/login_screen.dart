@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_supa_app/supabase_manager.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'homePage.dart';
+import 'home_page.dart';
 
 class LoginScreen extends StatefulWidget {
  const  LoginScreen({Key? key}) : super(key: key);
@@ -21,9 +21,9 @@ class _LoginScreenState extends State<LoginScreen> {
         Scaffold(
         body: Container(
           padding: const EdgeInsets.all(20),
-          child: Align(
+          child: const  Align(
             alignment: Alignment.center,
-            child: PinCodeVerificationScreen(),
+            child:  PinCodeVerificationScreen(),
           ),
         ),
     ),
@@ -44,16 +44,14 @@ class PinCodeVerificationScreen extends StatefulWidget {
 
 class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
   TextEditingController textEditingController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   static SupabaseManager supabaseManager = SupabaseManager();
 
-
-  // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
 
   bool hasError = false;
-  var phoneNumber;
+  var phoneNumber = '';
 
   final formKey = GlobalKey<FormState>();
 
@@ -115,7 +113,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                   setState(() {
                   });
                 },
-                style: TextStyle(letterSpacing:20),
+                style: const TextStyle(letterSpacing:20),
               ),
               Container(
                 margin:
@@ -159,7 +157,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                       text: "Enter the code sent to ",
                       children: [
                         TextSpan(
-                            text: "$phoneNumber",
+                            text: phoneNumber,
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -180,7 +178,11 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                       length: 6,
                       animationType: AnimationType.fade,
                       validator: (v) {
-
+                        if(v !=null || v?.length!=6)
+                          {
+                            return 'Please input correct otp';
+                          }
+                        return null;
                       },
                       pinTheme: PinTheme(
                         shape: PinCodeFieldShape.box,
@@ -275,7 +277,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                               () {
                             hasError = false;
                             snackBar("OTP Verified!!");
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>const HomePage()));
                               },
                         );
                       }

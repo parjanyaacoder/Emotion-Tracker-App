@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_supa_app/Providers/emotionClass.dart';
+import 'package:flutter_supa_app/Providers/emotion_class.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Screens/emotionView.dart';
+import '../Screens/emotion_view.dart';
 
 class EmotionGridView extends StatefulWidget {
   const EmotionGridView({Key? key}) : super(key: key);
@@ -27,9 +27,6 @@ String? userId;
 
    getUserId().then((value) => userId = value);
    Provider.of<EmotionListClass>(context,listen: false).getEmotionsList(userId).then((value) => emotionList = value);
-   print(userId);
-   print('Hi');
-   print(emotionList);
   }
 
 
@@ -40,17 +37,12 @@ String? userId;
     return RefreshIndicator(
 
       onRefresh: () async => {
-    //     print('ls'),
-    // await  getUserId().then((value) => userId = value),
-    //    await  Provider.of<EmotionListClass>(context,listen: false).getEmotionsList(userId).then((value) => emotionList = value),
-        setState(() {
-
+          setState(() {
         }),
-        print('as')
       },
       child: SingleChildScrollView(
           child:FutureBuilder(
-        future: Future.delayed(Duration(seconds: 1),
+        future: Future.delayed(const Duration(seconds: 1),
             () async => {  getUserId().then((value) => userId = value),
          emotionList = await  Provider.of<EmotionListClass>(context,listen: false).getEmotionsList(userId)
       }
@@ -72,7 +64,7 @@ String? userId;
             return  Column(
             children: [
               GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     childAspectRatio: 7 / 11,
@@ -95,11 +87,11 @@ String? userId;
                           child: Column(
                             children:  [
                               Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Text('${emotionList[index].title}'),
                               ),
                               Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Text('${emotionList[index].content}'),
                               )
                             ],

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_supa_app/supabase_manager.dart';
 
 class Emotion
@@ -23,7 +23,6 @@ class EmotionListClass extends ChangeNotifier
        emotionList.clear();
       SupabaseManager supabaseManager = SupabaseManager();
       response =await supabaseManager.getEmotionsData();
-      // print(response);
       notifyListeners();
     }
 
@@ -31,21 +30,16 @@ class EmotionListClass extends ChangeNotifier
     emotionList.clear();
     var tempList = [];
      await getData();
-       // print(response);
-       // print("HERE");
        if(response!=null) {
          tempList = response.toList();
        } else {
          tempList = [];
        }
-     // print("Gett");
-     // print(tempList);
       tempList.forEach((element)=>{
       if(element['user_id'] == userId)
       emotionList.add(Emotion(element['emotion_id'], element['emotion_title'], element['emotion_text'], element['isAnalyzed'])
       )}
       );
-      print(emotionList);
        return emotionList;
    }
 

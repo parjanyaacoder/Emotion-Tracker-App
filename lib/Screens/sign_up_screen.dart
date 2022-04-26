@@ -1,5 +1,5 @@
 // import 'package:flutter/material.dart';
-// import 'package:flutter_supa_app/Screens/loginScreen.dart';
+// import 'package:flutter_supa_app/Screens/login_screen.dart';
 // import 'package:flutter_supa_app/supabase_manager.dart';
 //
 // class SignUpScreen extends StatefulWidget {

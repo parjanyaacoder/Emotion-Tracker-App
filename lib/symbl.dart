@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class SymblApi {
-  String ApiId = '3774333943694374764177454874797846414f4255734857333654715552664a';
-  String AppSecret = '47714a555175747037306f5a4c746b5370685435626135685131666b44647a4a744c35716c796848544738344c634f56457374475f4a356773524f4155466a67';
+  String apiId = '3774333943694374764177454874797846414f4255734857333654715552664a';
+  String appSecret = '47714a555175747037306f5a4c746b5370685435626135685131666b44647a4a744c35716c796848544738344c634f56457374475f4a356773524f4155466a67';
 
-  var conversationId;
+  var conversationId = '';
 
 
   getAccessToken() async
@@ -18,8 +18,8 @@ class SymblApi {
           "Content-Type": "application/json"
         },
         body: json.encode({
-          "appId": ApiId,
-          "appSecret": AppSecret,
+          "appId": apiId,
+          "appSecret": appSecret,
           "type": "application",
         })
     );
@@ -45,9 +45,6 @@ class SymblApi {
         })
     );
 
-    print(response.statusCode);
-    print(response.body);
-
     if (response.statusCode == 201) {
       return json.decode(response.body);
     }
@@ -55,8 +52,6 @@ class SymblApi {
 
 
   getSentiments(String conversationId,String authToken) async {
-    print('hehe');
-    print(conversationId);
     Uri uri = Uri.parse('https://api.symbl.ai/v1/conversations/$conversationId/messages?sentiment=true');
   var  response = await http.get(uri,
     headers: {
@@ -65,8 +60,6 @@ class SymblApi {
     },
 
     );
-    print(response.statusCode);
-    print(response.body);
 
     return json.decode(response.body)['messages'];
 
@@ -83,8 +76,6 @@ class SymblApi {
       },
 
     );
-    print(response.statusCode);
-    print(response.body);
     return json.decode(response.body)['status'];
   }
 

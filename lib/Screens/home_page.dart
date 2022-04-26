@@ -1,12 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_supa_app/Components/emotionGridView.dart';
+import 'package:flutter_supa_app/Components/emotion_grid_view.dart';
 import 'package:flutter_supa_app/supabase_manager.dart';
-import 'createEmotionScreen.dart';
-import 'emotionView.dart';
-
-
+import 'create_emotion_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,7 +17,7 @@ class _HomePageState extends State<HomePage> {
  @override
  void initState() {
     super.initState();
-    SupabaseManager supabaseManager = new SupabaseManager();
+    SupabaseManager supabaseManager = SupabaseManager();
     supabaseManager.getEmotionsData();
   }
 
@@ -43,15 +39,14 @@ class _HomePageState extends State<HomePage> {
      child: SafeArea(
       child: Scaffold(
         appBar: AppBar(title: const Text('Emotions Page',),centerTitle: true,),
-        body:
-             EmotionGridView(),
+        body: const EmotionGridView(),
 
 
         floatingActionButton:FloatingActionButton(
           key: const Key("fab_key"),heroTag: "hero",
           child:const Icon(Icons.add,size: 28,color: Colors.blueGrey),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateEmotionScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>const CreateEmotionScreen()));
           },),
           floatingActionButtonAnimator:FloatingActionButtonAnimator.scaling,
 

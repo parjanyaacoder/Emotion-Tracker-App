@@ -13,7 +13,7 @@ class SupabaseManager {
  verifyPhoneOtp(String phone,String otp)
  async {
    final prefs = await SharedPreferences.getInstance();
-   var url = Uri.parse(supabaseUrl+"/auth/v1/verify");
+   var url = Uri.parse("$supabaseUrl/auth/v1/verify");
    var response = await http.post(url,
        headers: {
          "apiKey":supabaseKey,
@@ -24,19 +24,17 @@ class SupabaseManager {
          "type":"sms",
          "token":otp
        }));
-   // print(response.body);
    if(response.statusCode == 200)
      {
        await prefs.setString('userId','${json.decode(response.body)['user']['id']}');
        await prefs.setString('phoneNumber','${json.decode(response.body)['user']['phone']}');
      }
-   // print(response.statusCode);
  }
 
 
  signUpPhone(String phone) async
  {
-   var url = Uri.parse(supabaseUrl+"/auth/v1/otp");
+   var url = Uri.parse("$supabaseUrl/auth/v1/otp");
    var response = await http.post(url,
        headers: {
      "apiKey":supabaseKey,
@@ -45,25 +43,11 @@ class SupabaseManager {
        body: json.encode({
       "phone":phone
    }));
-   //
-   // print(response.body);
-   // print(response.statusCode);
  }
 
- signUpEmail(String email,String password,String phone,)
- async {
-   await client.auth.signUp(
-      email,
-      password,
-     userMetadata: {
-        "Phone":phone
-     }
-    );
- }
 
  Future<List> getEmotionsData() async {
    var response = await client.from('emotions').select().execute();
-   // print(response.data);
    return response.data;
  }
 
@@ -74,7 +58,6 @@ class SupabaseManager {
      'emotion_title':emotionTitle,
      'isAnalyzed':isAnalyzed
    }).execute();
-   print("Form supa");
   return response.data;
 
  }
