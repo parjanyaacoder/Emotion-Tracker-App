@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase/supabase.dart';
 import 'package:http/http.dart' as http;
 const supabaseUrl ='https://lraxpelmqfgvfawmxnoc.supabase.co';
@@ -11,6 +12,7 @@ class SupabaseManager {
 
  verifyPhoneOtp(String phone,String otp)
  async {
+   final prefs = await SharedPreferences.getInstance();
    var url = Uri.parse(supabaseUrl+"/auth/v1/verify");
    var response = await http.post(url,
        headers: {
@@ -22,8 +24,12 @@ class SupabaseManager {
          "type":"sms",
          "token":otp
        }));
-
    print(response.body);
+   if(response.statusCode == 200)
+     {
+       await prefs.setString('userId','${json.decode(response.body)['user']['id']}');
+       await prefs.setString('phoneNumber','${json.decode(response.body)['user']['phone']}');
+     }
    print(response.statusCode);
  }
 
@@ -53,6 +59,24 @@ class SupabaseManager {
         "Phone":phone
      }
     );
+ }
+
+ Future<List> getEmotionsData() async {
+   var response = await client.from('emotions').select().execute();
+   // print(response.data);
+   return response.data;
+ }
+
+ setEmotionData(String emotionId,String userId,String emotionText,String emotionTitle, bool isAnalyzed) async {
+   var response = await client.from('emotions').insert({
+      'user_id':userId,
+      'emotion_id':emotionId,
+     'emotion_text':emotionText,
+     'emotion_title':emotionTitle,
+     'isAnalyzed':isAnalyzed
+   });
+   print("Form supa");
+   print(response);
  }
 
 }

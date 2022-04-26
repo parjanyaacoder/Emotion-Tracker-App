@@ -138,7 +138,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                   child: TextButton(
                     onPressed: () {
                       formKey.currentState!.validate();
-                      supabaseManager.signUpPhone(_phoneController.value.text);
+                      supabaseManager.signUpPhone('91${_phoneController.value.text}');
                     },
                     child: Center(
                         child: Text(
@@ -269,7 +269,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                         setState(() => hasError = true);
                       } else {
 
-                        supabaseManager.verifyPhoneOtp(_phoneController.value.text, textEditingController.value.text);
+                        supabaseManager.verifyPhoneOtp('91${_phoneController.value.text}', textEditingController.value.text);
                         print("Done");
                         setState(
                               () {
