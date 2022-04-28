@@ -27,7 +27,7 @@ class _CreateEmotionScreenState extends State<CreateEmotionScreen> {
   @override
   Widget build(BuildContext context) {
 
-    wordCount = _contentEditingController.value.text.isEmpty ? 0 : (_contentEditingController.value.text.trim()).split(" ").length;
+
 
     return SafeArea(
       child:Scaffold(
@@ -39,6 +39,7 @@ class _CreateEmotionScreenState extends State<CreateEmotionScreen> {
         body: Padding(
             padding: const EdgeInsets.all(8.0),
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
                  Container(
@@ -71,9 +72,6 @@ class _CreateEmotionScreenState extends State<CreateEmotionScreen> {
                     child: TextField(
 
                       controller: _contentEditingController,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(100),
-                      ],
                       decoration:  InputDecoration(
                         labelText: 'Emotion',
                           contentPadding: const EdgeInsets.all(15),
@@ -81,7 +79,8 @@ class _CreateEmotionScreenState extends State<CreateEmotionScreen> {
                           labelStyle: const TextStyle(fontSize: 20,color: Colors.blueGrey),
                           counter: Padding(
                             padding: const EdgeInsets.all(4.0),
-                            child: Text('Word count - $wordCount/200',style: const TextStyle(fontSize: 15,color: Colors.blueGrey),),
+                            child: wordCount < 200 ? Text('Word count - $wordCount/200',style: const TextStyle(fontSize: 15,color: Colors.green))
+                              : Text('Word count - ${200 - wordCount}',style: const TextStyle(fontSize: 15,color: Colors.red)),
                           ),
                           enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20)))
                       ),
@@ -90,7 +89,11 @@ class _CreateEmotionScreenState extends State<CreateEmotionScreen> {
                       onChanged: (value){
                         value = _contentEditingController.value.text;
                       },
-                      onSubmitted: (value){},
+                      onEditingComplete: (){
+                    wordCount = _contentEditingController.value.text.isEmpty ? 0 : (_contentEditingController.value.text.trim()).split(" ").length;
+                    setState(() {
+                    });
+                      },
                     ),
                   ),
                   const SizedBox(height: 15,),

@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_supa_app/Screens/analyzed_screen.dart';
 import 'package:flutter_supa_app/symbl.dart';
 import 'package:glass_kit/glass_kit.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../Providers/emotion_class.dart';
+import 'dart:convert';
 
 class EmotionView extends StatefulWidget {
-  const EmotionView({Key? key,@required this.emotionTitle, @required this.emotionText}) : super(key: key);
+  const EmotionView({Key? key,@required this.emotionTitle, @required this.emotionText,@required this.emotionId,@required this.userId,@required this.analyzed}) : super(key: key);
   final  emotionTitle;
  final  emotionText;
-
+ final emotionId;
+ final userId;
+  final analyzed;
  @override
   _EmotionViewState createState() => _EmotionViewState();
 }
@@ -40,6 +46,19 @@ class _EmotionViewState extends State<EmotionView> {
    return  tempMsgs;
   }
 
+  saveAnalysis(List l,String emotionId,String userId)
+  async {
+   await  Provider.of<EmotionListClass>(context,listen: false).saveAnalysis(l,emotionId,userId);
+  }
+
+  getSavedAnalysis(String emotionId)
+  async {
+   await  Provider.of<EmotionListClass>(context,listen: false).getSavedAnalysis(emotionId).then((val)=>{
+     sentimentMsgs = val
+   });
+   return sentimentMsgs;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -51,6 +70,7 @@ class _EmotionViewState extends State<EmotionView> {
           elevation: 10,
         ),
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -101,15 +121,24 @@ class _EmotionViewState extends State<EmotionView> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButtonAnimator:FloatingActionButtonAnimator.scaling,
         floatingActionButton:  Container(
           margin: const EdgeInsets.all(15),
           width: MediaQuery.of(context).size.width*0.25,height: MediaQuery.of(context).size.height*0.045,
           child: FloatingActionButton(
+            key: const Key("fab_key"),heroTag: "hero",
             onPressed: () async {
-             await  analyzeText(widget.emotionText).then((val)=>sentimentMsgs = val);
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>AnalyzedScreen(sentimentMsgs
-              )));
-
+              if(widget.analyzed){
+                await getSavedAnalysis(widget.emotionId).then((val)=>sentimentMsgs = val);
+                print(sentimentMsgs);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AnalyzedScreen(sentimentMsgs)));
+              }
+              else
+                {
+                  await analyzeText(widget.emotionText).then((val) => sentimentMsgs = val);
+                  await saveAnalysis(sentimentMsgs, widget.emotionId, widget.userId);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AnalyzedScreen(sentimentMsgs)));
+                }
             },
             isExtended: true,
             shape:  RoundedRectangleBorder(

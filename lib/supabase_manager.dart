@@ -65,9 +65,31 @@ class SupabaseManager {
  deleteEmotion(String emptionId)
  async {
    var response = await client.from('emotions').delete().eq('emotion_id', emptionId).execute();
-   print(response.error);
-   print(response.status);
    return response.data;
  }
 
+ saveAnalysis(List l,String emotionId,String userId)
+ async {
+   var response = await client.from('analysis').insert({
+     'user_id':userId,
+     'emotion_id':emotionId,
+     'data':json.encode(l),
+   }).execute();
+ }
+ 
+ modifyAnalysed(String emotionId)
+ async {
+  var response = await client.from('emotions').update({
+    'isAnalyzed':true
+  }).match({'emotion_id':emotionId}).execute();
+
+ }
+
+ getSavedAnalysis(String emotionId)
+async {
+   var response = await client.from('analysis').select('data').match({'emotion_id':emotionId}).execute();
+   return json.decode(response.data[0]['data']);
+ }
+ 
+ 
 }

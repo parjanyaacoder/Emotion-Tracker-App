@@ -59,4 +59,18 @@ class EmotionListClass extends ChangeNotifier
       notifyListeners();
     }
 
+    saveAnalysis(List l,String emotionId,String userId)
+    async {
+      SupabaseManager supabaseManager = SupabaseManager();
+      response = await supabaseManager.saveAnalysis(l,emotionId,userId);
+      response = await supabaseManager.modifyAnalysed(emotionId);
+    }
+
+    getSavedAnalysis(String emotionId)
+  async {
+    SupabaseManager supabaseManager = SupabaseManager();
+    response = await supabaseManager.getSavedAnalysis(emotionId);
+    return response;
+  }
+
 }
