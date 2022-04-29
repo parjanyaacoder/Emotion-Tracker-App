@@ -70,70 +70,61 @@ String? userId;
                     )),
                   ));
             }
-            return  SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-              children: [
-                GridView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      childAspectRatio: 7 / 11,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                      maxCrossAxisExtent: 180,
-                    ),
-                    itemCount: emotionList.length,
-                    itemBuilder: (context, index) => InkWell(
-                          child: GlassContainer(
-
-                            height: MediaQuery.of(context).size.height*0.35,
-                            margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [Colors.orange.shade200,Colors.red.shade500],
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                                borderColor: Colors.grey,
-                            borderWidth: 2.0,
-                            width:  MediaQuery.of(context).size.height*0.25,
-
-                            child: Column(
-                              children:  [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text('${emotionList[index].title}',style: TextStyle(color: Colors.white),),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text('${emotionList[index].content}',style: TextStyle(color: Colors.white),),
-                                )
-                              ],
+            return  GridView.builder(
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  childAspectRatio: 7 / 11,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                  maxCrossAxisExtent: 180,
+                ),
+                itemCount: emotionList.length,
+                itemBuilder: (context, index) => InkWell(
+                      child: GlassContainer(
+                        height: MediaQuery.of(context).size.height*0.35,
+                        margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Colors.orange.shade200,Colors.red.shade500],
                             ),
-                          ),
-                          onTap: () {
+                            borderRadius: BorderRadius.circular(20),
+                            borderColor: Colors.grey,
+                        borderWidth: 2.0,
+                        width:  MediaQuery.of(context).size.height*0.25,
 
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => EmotionView(
-                                        emotionTitle: emotionList[index].title,
-                                        emotionText:
-                                        emotionList[index].content,
-                                        emotionId:emotionList[index].id,
-                                        userId: userId,
-                                        analyzed: emotionList[index].isAnalyzed,
-                                    )));
-                          },
-                      onLongPress: (){
-                            deleteEmotion(emotionList[index].id);
+                        child: Column(
+                          children:  [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('${emotionList[index].title}',style: TextStyle(color: Colors.white),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('${emotionList[index].content}',style: TextStyle(color: Colors.white),),
+                            )
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EmotionView(
+                                    emotionTitle: emotionList[index].title,
+                                    emotionText:
+                                    emotionList[index].content,
+                                    emotionId:emotionList[index].id,
+                                    userId: userId,
+                                    analyzed: emotionList[index].isAnalyzed,
+                                )));
                       },
-                        ))
-              ],
-          ),
-            );
+                  onLongPress: (){
+                        deleteEmotion(emotionList[index].id);
+                  },
+                    ));
           }
           return SizedBox(
               width: MediaQuery.of(context).size.width,

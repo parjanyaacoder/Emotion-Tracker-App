@@ -61,7 +61,7 @@ class _AnalyzedScreenState extends State<AnalyzedScreen> {
                    height: 10,
                  ),
                  Text(Map<String,dynamic>.from(widget.sentimentMsgs[index])['sentiment']['suggested'].toString(),style: TextStyle(
-                    color: Map<String,dynamic>.from(widget.sentimentMsgs[index])['sentiment']['suggested'].toString() == 'positive' ? Colors.green : Colors.red,
+                    color: Map<String,dynamic>.from(widget.sentimentMsgs[index])['sentiment']['suggested'].toString() == 'positive' || widget.sentimentMsgs[index]['sentiment']['suggested'].toString() == 'neutral' ? Colors.green : Colors.red,
                     fontSize: 16,
                  ),),
         ],

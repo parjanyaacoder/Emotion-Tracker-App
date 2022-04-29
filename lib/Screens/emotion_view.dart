@@ -3,9 +3,8 @@ import 'package:flutter_supa_app/Screens/analyzed_screen.dart';
 import 'package:flutter_supa_app/symbl.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../Providers/emotion_class.dart';
-import 'dart:convert';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class EmotionView extends StatefulWidget {
   const EmotionView({Key? key,@required this.emotionTitle, @required this.emotionText,@required this.emotionId,@required this.userId,@required this.analyzed}) : super(key: key);
@@ -18,10 +17,10 @@ class EmotionView extends StatefulWidget {
   _EmotionViewState createState() => _EmotionViewState();
 }
 
-class _EmotionViewState extends State<EmotionView> {
+class _EmotionViewState extends State<EmotionView> with TickerProviderStateMixin{
 
   var sentimentMsgs;
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = new  GlobalKey<ScaffoldState>();
  Future<List> analyzeText(String text)
   async {
     var authToken = '';
@@ -59,11 +58,40 @@ class _EmotionViewState extends State<EmotionView> {
    return sentimentMsgs;
   }
 
+ List textData =  [
+    {'text':"Stalking your ex's insta",'image':"lib/assets/images/undraw_couple_re_94tl.svg"},
+   {'text':"Looking for your bff",'image':"lib/assets/images/undraw_couple_re_94tl.svg"},
+   {'text':"Reaching for your heart", 'image':"lib/assets/images/undraw_couple_re_94tl.svg",},
+   {'text':"Looking for your Humsafar", 'image':"lib/assets/images/undraw_snowman_re_guxt.svg",},
+   {'text':"Right Swiping someone for a long talk",'image':"lib/assets/images/undraw_couple_re_94tl.svg",}
+  ];
+ late AnimationController _animation;
+  late var _index;
+ @override
+  void initState() {
+   super.initState();
+   _animation = AnimationController(vsync: this,
+   lowerBound: 0,
+   upperBound: 1,
+   duration: const Duration(seconds: 5)
+   )..repeat();
+
+   _index = StepTween(
+     begin: 0,
+     end:textData.length
+   ).animate(CurvedAnimation(parent: _animation, curve: Curves.linear));
+   }
+  @override
+  void dispose() {
+    _animation.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
 
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.yellow.shade100,
         appBar: AppBar(title: const Text('Emotion View',),
         centerTitle: true,
@@ -130,14 +158,68 @@ class _EmotionViewState extends State<EmotionView> {
             onPressed: () async {
               if(widget.analyzed){
                 await getSavedAnalysis(widget.emotionId).then((val)=>sentimentMsgs = val);
-                print(sentimentMsgs);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => AnalyzedScreen(sentimentMsgs)));
               }
               else
                 {
+
+                  showModalBottomSheet(context:context,builder:(context) =>
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                              topLeft:  Radius.circular(40.0),
+                              topRight: Radius.circular(40.0)
+                          ),
+                          color: Colors.yellow.shade100,
+                        ),
+                        child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height*0.4,
+                            child:  Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Center(
+                                  child: AnimatedBuilder(
+                                      animation: _animation,
+                                      builder: (BuildContext context, Widget? child) {
+                                        return  Column(
+                                          children: [
+                                            SvgPicture.asset(textData[_index.value.toInt()]['image'],
+                                              height: MediaQuery.of(context).size.height * 0.25,
+                                            ),
+
+                                            Text(textData[_index.value.toInt()]['text'],
+                                              style: const TextStyle(
+                                                fontSize: 16.0,
+                                              ),
+                                            ),
+                                            const Padding(
+                                              padding:  EdgeInsets.all(8.0),
+                                              child:  LinearProgressIndicator(
+                                                minHeight: 2.0,
+                                                backgroundColor: Colors.orange,
+
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      }
+                                  ),
+                                )
+                            )),
+                      ),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(40),
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                  );
                   await analyzeText(widget.emotionText).then((val) => sentimentMsgs = val);
-                  await saveAnalysis(sentimentMsgs, widget.emotionId, widget.userId);
+                  await saveAnalysis(sentimentMsgs, widget.emotionId, widget.userId).then((val) => {
+                  Navigator.of(context, rootNavigator: true).pop()
+                  });
                   Navigator.push(context, MaterialPageRoute(builder: (context) => AnalyzedScreen(sentimentMsgs)));
+
                 }
             },
             isExtended: true,

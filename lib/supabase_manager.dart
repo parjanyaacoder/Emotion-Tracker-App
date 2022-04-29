@@ -47,7 +47,7 @@ class SupabaseManager {
 
 
  Future<List> getEmotionsData() async {
-   var response = await client.from('emotions').select().execute();
+   var response = await client.from('emotions').select().order('created_at',ascending: false).execute();
    return response.data;
  }
 
