@@ -22,6 +22,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<bool> checkUser() async  {
     final prefs = await  SharedPreferences.getInstance();
+   await  prefs.setString('userId', '36f953f0-291b-4e8c-af24-739bb8129ea2');
     if(prefs.getString('userId')!=null) {
       return true;
     }
@@ -55,7 +56,10 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.orange,
       ),
       debugShowCheckedModeBanner: false,
-      home: authorized ? const HomePage() : const LoginScreen()
+      home:
+     // authorized ?
+       const HomePage()
+      // : const LoginScreen()
     );
   }
 }
